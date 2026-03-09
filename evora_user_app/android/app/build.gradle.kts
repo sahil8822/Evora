@@ -7,7 +7,8 @@ plugins {
 
 android {
     namespace = "com.example.evora"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
+    buildToolsVersion = "35.0.0"
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

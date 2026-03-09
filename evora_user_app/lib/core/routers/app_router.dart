@@ -5,13 +5,13 @@ import 'package:evora/screens/booking/bookings_screen.dart';
 import 'package:evora/screens/home/screens/home_screens.dart';
 import 'package:evora/screens/profile/profile_screen.dart';
 import 'package:evora/screens/messages/messages_screen.dart';
-import 'package:evora/screens/services/services_screen.dart';
 import 'package:evora/screens/services/vendor_listing_screen.dart';
 import 'package:evora/screens/services/vendor_details_screen.dart';
 import 'package:evora/screens/services/booking_wizard.dart';
 import 'package:evora/screens/services/payment_screen.dart';
 import 'package:evora/screens/services/booking_confirmation_screen.dart';
 import 'package:evora/screens/messages/chat_screen.dart';
+import 'package:evora/screens/explore/explore_feed_screen.dart';
 
 import 'package:evora/screens/booking/booking_details_screen.dart';
 import 'package:evora/screens/services/all_reviews_screen.dart';
@@ -77,9 +77,9 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state) => const HomeScreens(),
         ),
         GoRoute(
-          path: ServicesScreen.route,
-          name: ServicesScreen.route,
-          builder: (context, state) => const ServicesScreen(),
+          path: ExploreFeedScreen.route,
+          name: ExploreFeedScreen.route,
+          builder: (context, state) => const ExploreFeedScreen(),
         ),
         GoRoute(
           path: BookingsScreen.route,

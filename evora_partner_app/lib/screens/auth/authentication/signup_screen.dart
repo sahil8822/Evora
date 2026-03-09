@@ -1,7 +1,5 @@
-import 'package:evora/components/app_button.dart';
-import 'package:evora/components/app_text.dart';
-import 'package:evora/components/custom_text_field.dart';
-import 'package:evora/core/theme/app_colors.dart';
+import 'package:evora_partner_app/components/custom_text_field.dart';
+import 'package:evora_partner_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -18,16 +16,9 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,34 +28,26 @@ class _SignupScreenState extends State<SignupScreen> {
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20.h),
-              Align(
+              IconButton(
+                onPressed: () => context.pop(),
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                padding: EdgeInsets.zero,
                 alignment: Alignment.centerLeft,
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                  onPressed: () => context.pop(),
-                ),
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 20.h),
               Text(
                 "Create Account",
-                style: GoogleFonts.montserrat(
-                  fontSize: 28.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
+                style: Theme.of(context).textTheme.displaySmall,
               ),
               SizedBox(height: 8.h),
-              AppText(
-                text: "Join the Evora community today",
-                fontSize: 14.sp,
-                color: AppColors.textSecondary,
+              Text(
+                "Join the Evora Partner community",
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               SizedBox(height: 32.h),
-
-              SizedBox(height: 24.h),
 
               CustomTextField(
                 controller: _nameController,
@@ -74,9 +57,16 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(height: 16.h),
               CustomTextField(
                 controller: _emailController,
-                hintText: "Email Address",
+                hintText: "Email address",
                 prefixIcon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
+              ),
+              SizedBox(height: 16.h),
+              CustomTextField(
+                controller: _phoneController,
+                hintText: "Phone number",
+                prefixIcon: Icons.phone_android_rounded,
+                keyboardType: TextInputType.phone,
               ),
               SizedBox(height: 16.h),
               CustomTextField(
@@ -89,37 +79,43 @@ class _SignupScreenState extends State<SignupScreen> {
                     _obscurePassword
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
-                    color: AppColors.textSecondary,
+                    color: AppColors.secondaryColor,
                     size: 20.sp,
                   ),
                   onPressed: () =>
                       setState(() => _obscurePassword = !_obscurePassword),
                 ),
               ),
+
               SizedBox(height: 32.h),
-              CustomButton(
-                text: "Sign Up",
+
+              ElevatedButton(
                 onPressed: () {
-                  // Handle Sign Up
+                  // Navigate to Profile Setup after signup
+                  // For now, go to dashboard
                 },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 56.h),
+                ),
+                child: const Text("Create Account"),
               ),
-              SizedBox(height: 24.h),
+
+              SizedBox(height: 32.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppText(
-                    text: "Already have an account? ",
-                    color: AppColors.textSecondary,
-                    fontSize: 14.sp,
+                  Text(
+                    "Already have an account? ",
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   GestureDetector(
                     onTap: () => context.pop(),
                     child: Text(
                       "Login",
-                      style: TextStyle(
-                        color: AppColors.primaryColor,
+                      style: GoogleFonts.poppins(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
+                        color: AppColors.accentColor,
                       ),
                     ),
                   ),

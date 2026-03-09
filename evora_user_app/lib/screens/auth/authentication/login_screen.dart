@@ -23,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
-  String _selectedRole = 'Customer'; // 'Customer' or 'Vendor'
 
   @override
   void dispose() {
@@ -94,21 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 32.h),
 
-                  // Role Selection Toggle
-                  Container(
-                    padding: EdgeInsets.all(4.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16.r),
-                      border: Border.all(color: Colors.grey.withOpacity(0.1)),
-                    ),
-                    child: Row(
-                      children: [
-                        _buildRoleTab('Customer'),
-                        _buildRoleTab('Vendor'),
-                      ],
-                    ),
-                  ),
                   SizedBox(height: 32.h),
 
                   // Form Section
@@ -243,33 +227,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildRoleTab(String role) {
-    bool isSelected = _selectedRole == role;
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => setState(() => _selectedRole = role),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          padding: EdgeInsets.symmetric(vertical: 12.h),
-          decoration: BoxDecoration(
-            color: isSelected ? AppColors.primaryColor : Colors.transparent,
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Center(
-            child: Text(
-              role,
-              style: GoogleFonts.poppins(
-                fontSize: 14.sp,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                color: isSelected ? Colors.white : AppColors.textSecondary,
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

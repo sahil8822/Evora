@@ -1,11 +1,11 @@
-import 'package:evora/core/theme/app_colors.dart';
-import 'package:evora/screens/booking/bookings_screen.dart';
-import 'package:evora/screens/explore/explore_feed_screen.dart';
-import 'package:evora/screens/messages/messages_screen.dart';
-import 'package:evora/screens/home/screens/home_screens.dart';
-import 'package:evora/screens/profile/profile_screen.dart';
+import 'package:evora_partner_app/core/theme/app_colors.dart';
+import 'package:evora_partner_app/screens/booking/bookings_screen.dart';
+import 'package:evora_partner_app/screens/messages/messages_screen.dart';
+import 'package:evora_partner_app/screens/home/screens/home_screens.dart';
+import 'package:evora_partner_app/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,28 +25,25 @@ class _BottomNavState extends State<BottomNav>
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.path;
     if (location == HomeScreens.route) return 0;
-    if (location == ExploreFeedScreen.route) return 1;
-    if (location == BookingsScreen.route) return 2;
-    if (location == MessagesScreen.route) return 3;
-    if (location == ProfileScreen.route) return 4;
+    if (location == BookingsScreen.route) return 1;
+    if (location == MessagesScreen.route) return 2;
+    if (location == ProfileScreen.route) return 3;
     return 0;
   }
 
   void _onItemTapped(int index, BuildContext context) {
+    HapticFeedback.lightImpact();
     switch (index) {
       case 0:
         context.go(HomeScreens.route);
         break;
       case 1:
-        context.go(ExploreFeedScreen.route);
-        break;
-      case 2:
         context.go(BookingsScreen.route);
         break;
-      case 3:
+      case 2:
         context.go(MessagesScreen.route);
         break;
-      case 4:
+      case 3:
         context.go(ProfileScreen.route);
         break;
     }
@@ -60,7 +57,6 @@ class _BottomNavState extends State<BottomNav>
       backgroundColor: AppColors.backgroundColor,
       body: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
-          // Only respond to vertical scrolling to prevent horizontal swipes from hiding the bar
           if (notification.metrics.axis == Axis.vertical) {
             if (notification.direction == ScrollDirection.reverse) {
               if (_isVisible) setState(() => _isVisible = false);
@@ -96,7 +92,7 @@ class _BottomNavState extends State<BottomNav>
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final double barWidth = constraints.maxWidth;
-                final double tabWidth = barWidth / 5;
+                final double tabWidth = barWidth / 4;
                 final double indicatorWidth = 32.w;
 
                 return Stack(
@@ -126,30 +122,24 @@ class _BottomNavState extends State<BottomNav>
                       children: [
                         _buildNavItem(
                           0,
-                          Icons.home_rounded,
+                          Icons.dashboard_rounded,
                           "Home",
                           selectedIndex,
                         ),
                         _buildNavItem(
                           1,
-                          Icons.explore_rounded,
-                          "Explore",
-                          selectedIndex,
-                        ),
-                        _buildNavItem(
-                          2,
-                          Icons.calendar_today_rounded,
+                          Icons.calendar_month_rounded,
                           "Bookings",
                           selectedIndex,
                         ),
                         _buildNavItem(
-                          3,
-                          Icons.message_rounded,
-                          "Messages",
+                          2,
+                          Icons.chat_bubble_rounded,
+                          "Chat",
                           selectedIndex,
                         ),
                         _buildNavItem(
-                          4,
+                          3,
                           Icons.person_rounded,
                           "Profile",
                           selectedIndex,
