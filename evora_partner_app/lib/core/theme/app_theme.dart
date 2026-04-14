@@ -9,11 +9,8 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.accentColor,
-        primary: AppColors.primaryColor,
-        secondary: AppColors.secondaryColor,
-        surface: AppColors.surfaceColor,
-        background: AppColors.backgroundColor,
+        seedColor: AppColors.primaryColor,
+        surface: AppColors.backgroundColor,
       ),
       scaffoldBackgroundColor: AppColors.backgroundColor,
 
@@ -154,7 +151,7 @@ class AppTheme {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(
-            color: AppColors.accentColor,
+            color: AppColors.primaryColor,
             width: 1.5,
           ),
         ),

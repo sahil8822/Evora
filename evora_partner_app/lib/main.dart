@@ -5,11 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:evora_partner_app/core/routers/app_router.dart';
 import 'package:evora_partner_app/core/theme/app_colors.dart';
 import 'package:provider/provider.dart';
+import 'package:evora_partner_app/providers/feed_provider.dart';
 import 'package:evora_partner_app/providers/vendor_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   // Lock orientation to portrait only
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -18,7 +18,10 @@ void main() async {
 
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => VendorProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => VendorProvider()),
+        ChangeNotifierProvider(create: (_) => FeedProvider()..init()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -39,7 +42,6 @@ class MyApp extends StatelessWidget {
           title: 'Evora Partner',
           debugShowCheckedModeBanner: false,
           routerConfig: appRouter,
-
           // Force text scale factor to 1
           builder: (context, child) {
             return Container(
@@ -55,7 +57,6 @@ class MyApp extends StatelessWidget {
               ),
             );
           },
-
           theme: AppTheme.lightTheme,
         );
       },

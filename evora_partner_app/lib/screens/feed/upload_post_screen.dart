@@ -1,8 +1,11 @@
 import 'package:evora_partner_app/core/theme/app_colors.dart';
+import 'package:evora_partner_app/core/models/feed_post.dart';
+import 'package:evora_partner_app/providers/feed_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class UploadPostScreen extends StatefulWidget {
   const UploadPostScreen({super.key});
@@ -302,7 +305,7 @@ class _UploadPostScreenState extends State<UploadPostScreen>
                 child: GestureDetector(
                   onTap: () {
                     HapticFeedback.mediumImpact();
-                    // Handle publish
+                    _publish(context);
                   },
                   child: Container(
                     width: double.infinity,
@@ -443,6 +446,85 @@ class _UploadPostScreenState extends State<UploadPostScreen>
         ),
       ],
     );
+  }
+
+  Future<void> _publish(BuildContext context) async {
+    final caption = _captionController.text.trim();
+    final price = _priceController.text.trim();
+    final location = _locationController.text.trim();
+    final category = _selectedCategory;
+
+    if (category == null || category.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a category')),
+      );
+      return;
+    }
+    if (caption.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please write a caption')),
+      );
+      return;
+    }
+    if (price.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a starting price')),
+      );
+      return;
+    }
+
+    final imageUrl = _defaultImageForCategory(category);
+    final avatarUrl =
+        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200';
+
+    final post = FeedPost(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      vendorName: 'Your Business',
+      category: category,
+      location: location.isEmpty ? 'Your City' : location,
+      caption: caption,
+      priceLabel: '₹$price',
+      imageUrl: imageUrl,
+      vendorAvatarUrl: avatarUrl,
+      rating: 4.8,
+      likes: 0,
+      createdAt: DateTime.now(),
+    );
+
+    await context.read<FeedProvider>().addPost(post);
+    if (!context.mounted) return;
+
+    setState(() {
+      _postsUsed = (_postsUsed + 1).clamp(0, _postLimit);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Post published')),
+    );
+    Navigator.pop(context);
+  }
+
+  String _defaultImageForCategory(String category) {
+    switch (category) {
+      case 'Tent House':
+        return 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800';
+      case 'Catering':
+        return 'https://images.unsplash.com/photo-1555244162-803834f70033?w=800';
+      case 'DJ':
+        return 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800';
+      case 'Mehendi':
+        return 'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800';
+      case 'Wedding Garden':
+        return 'https://images.unsplash.com/photo-1464366400600-7168b924a78a?w=800';
+      case 'Decoration':
+        return 'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=800';
+      case 'Cameraman':
+        return 'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800';
+      case 'Wedding Cards':
+        return 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800';
+      default:
+        return 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800';
+    }
   }
 }
 

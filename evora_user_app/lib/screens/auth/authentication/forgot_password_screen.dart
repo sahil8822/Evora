@@ -3,7 +3,6 @@ import 'package:evora/components/app_text.dart';
 import 'package:evora/components/custom_text_field.dart';
 import 'package:evora/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -32,26 +31,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         children: [
           // Background Decorative Elements
           Positioned(
-            top: -100.h,
-            right: -100.w,
+            top: -100,
+            right: -100,
             child: Container(
-              width: 300.w,
-              height: 300.w,
+              width: 300,
+              height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primaryColor.withValues(alpha: 0.1),
+                color: AppColors.primaryColor.withOpacity(0.1),
               ),
             ),
           ),
           Positioned(
-            bottom: 0.h,
-            left: -50.w,
+            bottom: 0,
+            left: -50,
             child: Container(
-              width: 300.w,
-              height: 300.w,
+              width: 300,
+              height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.accentColor.withValues(alpha: 0.1),
+                color: AppColors.accentColor.withOpacity(0.1),
               ),
             ),
           ),
@@ -60,18 +59,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               children: [
                 // Custom AppBar
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 8.h,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
                   ),
                   child: Row(
                     children: [
                       IconButton(
                         onPressed: () => context.pop(),
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back_ios_new_rounded,
                           color: AppColors.textPrimary,
-                          size: 20.sp,
+                          size: 20,
                         ),
                       ),
                     ],
@@ -79,49 +78,49 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(height: 20.h),
+                        const SizedBox(height: 20),
                         Center(
                           child: Column(
                             children: [
                               Text(
                                 "Evora",
                                 style: GoogleFonts.inriaSerif(
-                                  fontSize: 48.sp,
+                                  fontSize: 48,
                                   color: AppColors.primaryColor,
                                   fontWeight: FontWeight.w400,
-                                  letterSpacing: 2.w,
+                                  letterSpacing: 2,
                                 ),
                               ),
-                              SizedBox(height: 8.h),
-                              AppText(
+                              const SizedBox(height: 8),
+                              const AppText(
                                 text: "Reset your password",
-                                fontSize: 16.sp,
+                                fontSize: 16,
                                 color: AppColors.textSecondary,
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(height: 48.h),
+                        const SizedBox(height: 48),
                         CustomTextField(
                           controller: _emailController,
                           hintText: "Email Address",
                           prefixIcon: Icons.email_outlined,
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        SizedBox(height: 40.h),
+                        const SizedBox(height: 40),
                         CustomButton(
                           text: "Send Reset Link",
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: AppText(
+                                content: const AppText(
                                   text: "Password reset link sent!",
                                   color: Colors.white,
-                                  fontSize: 14.sp,
+                                  fontSize: 14,
                                 ),
                                 backgroundColor: AppColors.accentColor,
                               ),

@@ -1,20 +1,18 @@
 import 'dart:ui';
 
 class AppColors {
-  // Main BG - Soft Ivory
-  static const Color backgroundColor = Color(0xFFF9F8F3);
+  // Keep Partner app aligned with User app palette
+  // Main BG - Soft Blush (User app)
+  static const Color backgroundColor = Color(0xFFFFFFFF);
 
-  // Surface - Pure White
-  static const Color surfaceColor = Color(0xFFFFFFFF);
+  // Light BG - Ivory (User app)
+  static const Color secondaryColor = Color(0xFFFAF6F2);
 
-  // Primary - Elegant Dark Slate/Indigo
-  static const Color primaryColor = Color(0xFF101828);
+  // Primary - Rose (User app)
+  static const Color primaryColor = Color(0xFFC97C7C);
 
-  // Secondary - Soft Slate
-  static const Color secondaryColor = Color(0xFF667085);
-
-  // Accent - Modern Indigo/Violet
-  static const Color accentColor = Color(0xFF5C59E8);
+  // Accent - Gold (User app)
+  static const Color accentColor = Color(0xFFD4B483);
 
   // Success - Emerald (for Earnings)
   static const Color successColor = Color(0xFF12B76A);
@@ -26,13 +24,16 @@ class AppColors {
   static const Color errorColor = Color(0xFFF04438);
 
   // Text Colors
-  static const Color textPrimary = Color(0xFF101828);
-  static const Color textSecondary = Color(0xFF667085);
-  static const Color textTertiary = Color(0xFF98A2B3);
+  static const Color textPrimary = Color(0xFF4A3A35);
+  static const Color textSecondary = Color(0xFF8C7A75);
+  static const Color textTertiary = Color(0xFFB8A7A2);
 
   // Shimmer
-  static const Color shimmerBase = Color(0xFFF2F4F7);
+  static const Color shimmerBase = Color(0xFFF2F1EF);
   static const Color shimmerHighlight = Color(0xFFFFFFFF);
+
+  // Surfaces
+  static const Color surfaceColor = Color(0xFFFFFFFF);
 
   // Social Colors
   static const Color googleColor = Color(0xFFDB4437);

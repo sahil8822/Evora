@@ -3,7 +3,6 @@ import 'package:evora/components/app_text.dart';
 import 'package:evora/components/custom_text_field.dart';
 import 'package:evora/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -35,11 +34,11 @@ class _SignupScreenState extends State<SignupScreen> {
       backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 20.h),
+              const SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerLeft,
                 child: IconButton(
@@ -47,38 +46,38 @@ class _SignupScreenState extends State<SignupScreen> {
                   onPressed: () => context.pop(),
                 ),
               ),
-              SizedBox(height: 10.h),
+              const SizedBox(height: 10),
               Text(
                 "Create Account",
                 style: GoogleFonts.montserrat(
-                  fontSize: 28.sp,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
                 ),
               ),
-              SizedBox(height: 8.h),
-              AppText(
+              const SizedBox(height: 8),
+              const AppText(
                 text: "Join the Evora community today",
-                fontSize: 14.sp,
+                fontSize: 14,
                 color: AppColors.textSecondary,
               ),
-              SizedBox(height: 32.h),
+              const SizedBox(height: 32),
 
-              SizedBox(height: 24.h),
+              const SizedBox(height: 24),
 
               CustomTextField(
                 controller: _nameController,
                 hintText: "Full Name",
                 prefixIcon: Icons.person_outline_rounded,
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
               CustomTextField(
                 controller: _emailController,
                 hintText: "Email Address",
                 prefixIcon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
               CustomTextField(
                 controller: _passwordController,
                 hintText: "Password",
@@ -90,42 +89,42 @@ class _SignupScreenState extends State<SignupScreen> {
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
                     color: AppColors.textSecondary,
-                    size: 20.sp,
+                    size: 20,
                   ),
                   onPressed: () =>
                       setState(() => _obscurePassword = !_obscurePassword),
                 ),
               ),
-              SizedBox(height: 32.h),
+              const SizedBox(height: 32),
               CustomButton(
                 text: "Sign Up",
                 onPressed: () {
                   // Handle Sign Up
                 },
               ),
-              SizedBox(height: 24.h),
+              const SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppText(
+                  const AppText(
                     text: "Already have an account? ",
                     color: AppColors.textSecondary,
-                    fontSize: 14.sp,
+                    fontSize: 14,
                   ),
                   GestureDetector(
                     onTap: () => context.pop(),
-                    child: Text(
+                    child: const Text(
                       "Login",
                       style: TextStyle(
                         color: AppColors.primaryColor,
-                        fontSize: 14.sp,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 24.h),
+              const SizedBox(height: 24),
             ],
           ),
         ),

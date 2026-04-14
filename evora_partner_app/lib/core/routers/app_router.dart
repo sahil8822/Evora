@@ -7,7 +7,7 @@ import 'package:evora_partner_app/screens/auth/onboarding/splash_screen.dart';
 import 'package:evora_partner_app/screens/auth/onboarding/vendor_profile_setup_screen.dart';
 import 'package:evora_partner_app/screens/booking/booking_details_screen.dart';
 import 'package:evora_partner_app/screens/booking/bookings_screen.dart';
-import 'package:evora_partner_app/screens/home/bottom_nave/bottom_nav.dart';
+import 'package:evora_partner_app/screens/home/bottom_nav/bottom_nav.dart';
 import 'package:evora_partner_app/screens/home/screens/home_screens.dart';
 import 'package:evora_partner_app/screens/messages/chat_screen.dart';
 import 'package:evora_partner_app/screens/messages/messages_screen.dart';

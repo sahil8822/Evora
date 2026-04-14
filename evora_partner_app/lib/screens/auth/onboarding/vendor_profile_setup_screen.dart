@@ -4,7 +4,6 @@ import 'package:evora_partner_app/screens/home/screens/home_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class VendorProfileSetupScreen extends StatefulWidget {
   const VendorProfileSetupScreen({super.key});
@@ -65,8 +64,8 @@ class _VendorProfileSetupScreenState extends State<VendorProfileSetupScreen> {
                     margin: EdgeInsets.symmetric(horizontal: 4.w),
                     decoration: BoxDecoration(
                       color: index <= _currentStep
-                          ? AppColors.accentColor
-                          : AppColors.secondaryColor.withOpacity(0.2),
+                          ? AppColors.primaryColor
+                          : AppColors.textTertiary.withValues(alpha: 0.35),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -127,9 +126,12 @@ class _VendorProfileSetupScreenState extends State<VendorProfileSetupScreen> {
                 width: 100.w,
                 height: 100.w,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surfaceColor,
                   shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFFF2F4F7), width: 2),
+                  border: Border.all(
+                    color: AppColors.textTertiary.withValues(alpha: 0.25),
+                    width: 2,
+                  ),
                 ),
                 child: Icon(
                   Icons.add_a_photo_outlined,
@@ -143,7 +145,7 @@ class _VendorProfileSetupScreenState extends State<VendorProfileSetupScreen> {
                 child: Container(
                   padding: EdgeInsets.all(6.w),
                   decoration: const BoxDecoration(
-                    color: AppColors.accentColor,
+                    color: AppColors.primaryColor,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(Icons.edit, size: 14.sp, color: Colors.white),
@@ -233,9 +235,11 @@ class _VendorProfileSetupScreenState extends State<VendorProfileSetupScreen> {
           itemBuilder: (context, index) {
             return Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.surfaceColor,
                 borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(color: const Color(0xFFF2F4F7)),
+                border: Border.all(
+                  color: AppColors.textTertiary.withValues(alpha: 0.25),
+                ),
               ),
               child: Icon(
                 Icons.add_photo_alternate_outlined,

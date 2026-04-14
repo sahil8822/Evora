@@ -22,7 +22,17 @@ class ProfileScreen extends StatelessWidget {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                color: AppColors.primaryColor,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.primaryColor,
+                      AppColors.primaryColor.withValues(alpha: 0.88),
+                      AppColors.accentColor.withValues(alpha: 0.55),
+                    ],
+                  ),
+                ),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -35,7 +45,7 @@ class ProfileScreen extends StatelessWidget {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.black.withValues(alpha: 0.1),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -61,7 +71,7 @@ class ProfileScreen extends StatelessWidget {
                       Text(
                         "Premium Vendor",
                         style: GoogleFonts.poppins(
-                          color: Colors.white70,
+                          color: Colors.white.withValues(alpha: 0.8),
                           fontSize: 12.sp,
                         ),
                       ),
@@ -130,7 +140,9 @@ class ProfileScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () => context.go(LoginScreen.route),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.errorColor.withOpacity(0.1),
+                      backgroundColor: AppColors.errorColor.withValues(
+                        alpha: 0.1,
+                      ),
                       foregroundColor: AppColors.errorColor,
                       elevation: 0,
                       minimumSize: Size(double.infinity, 56.h),
@@ -155,7 +167,7 @@ class ProfileScreen extends StatelessWidget {
         style: GoogleFonts.montserrat(
           fontSize: 14.sp,
           fontWeight: FontWeight.bold,
-          color: AppColors.secondaryColor,
+          color: AppColors.textTertiary,
           letterSpacing: 1,
         ),
       ),
@@ -168,52 +180,56 @@ class ProfileScreen extends StatelessWidget {
     String subtitle,
     VoidCallback onTap,
   ) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ListTile(
-        onTap: onTap,
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-        leading: Container(
-          padding: EdgeInsets.all(10.w),
-          decoration: BoxDecoration(
-            color: AppColors.backgroundColor,
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Icon(icon, color: AppColors.accentColor, size: 24.sp),
+    return _PressableTile(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 12.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(color: const Color(0xFFF2F4F7)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.02),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        title: Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            fontSize: 14.sp,
+        child: ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+          leading: Container(
+            padding: EdgeInsets.all(10.w),
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Icon(icon, color: AppColors.primaryColor, size: 24.sp),
           ),
-        ),
-        subtitle: Text(
-          subtitle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.poppins(
-            fontSize: 11.sp,
-            color: AppColors.textSecondary,
+          title: Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              fontSize: 14.sp,
+              color: AppColors.textPrimary,
+            ),
           ),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios_rounded,
-          size: 14.sp,
-          color: AppColors.secondaryColor,
+          subtitle: Text(
+            subtitle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+              fontSize: 11.sp,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          trailing: Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 14.sp,
+            color: AppColors.textTertiary,
+          ),
         ),
       ),
     );
@@ -262,6 +278,37 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _PressableTile extends StatefulWidget {
+  final Widget child;
+  final VoidCallback onTap;
+  const _PressableTile({required this.child, required this.onTap});
+
+  @override
+  State<_PressableTile> createState() => _PressableTileState();
+}
+
+class _PressableTileState extends State<_PressableTile> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedScale(
+      duration: const Duration(milliseconds: 120),
+      curve: Curves.easeOut,
+      scale: _pressed ? 0.985 : 1,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20.r),
+          onTap: widget.onTap,
+          onHighlightChanged: (v) => setState(() => _pressed = v),
+          child: widget.child,
+        ),
+      ),
     );
   }
 }

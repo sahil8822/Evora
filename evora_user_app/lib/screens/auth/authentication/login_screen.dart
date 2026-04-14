@@ -7,7 +7,6 @@ import 'package:evora/screens/auth/authentication/forgot_password_screen.dart';
 import 'package:evora/screens/auth/authentication/signup_screen.dart';
 import 'package:evora/screens/home/screens/home_screens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,36 +38,36 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           // Background Decorative Elements
           Positioned(
-            top: -100.h,
-            right: -100.w,
+            top: -100,
+            right: -100,
             child: Container(
-              width: 300.w,
-              height: 300.w,
+              width: 300,
+              height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primaryColor.withValues(alpha: 0.1),
+                color: AppColors.primaryColor.withOpacity(0.1),
               ),
             ),
           ),
           Positioned(
-            bottom: 0.h,
-            left: -50.w,
+            bottom: 0,
+            left: -50,
             child: Container(
-              width: 300.w,
-              height: 300.w,
+              width: 300,
+              height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.accentColor.withValues(alpha: 0.1),
+                color: AppColors.accentColor.withOpacity(0.1),
               ),
             ),
           ),
           SafeArea(
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: 40.h),
+                  const SizedBox(height: 40),
                   // Logo Section
                   Center(
                     child: Column(
@@ -76,24 +75,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           "Evora",
                           style: GoogleFonts.inriaSerif(
-                            fontSize: 48.sp,
+                            fontSize: 48,
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.w400,
-                            letterSpacing: 2.w,
+                            letterSpacing: 2,
                           ),
                         ),
-                        SizedBox(height: 8.h),
-                        AppText(
+                        const SizedBox(height: 8),
+                        const AppText(
                           text: "Login to your account",
-                          fontSize: 16.sp,
+                          fontSize: 16,
                           color: AppColors.textSecondary,
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 32.h),
+                  const SizedBox(height: 32),
 
-                  SizedBox(height: 32.h),
+                  const SizedBox(height: 32),
 
                   // Form Section
                   CustomTextField(
@@ -102,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     prefixIcon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  SizedBox(height: 16.h),
+                  const SizedBox(height: 16),
                   CustomTextField(
                     controller: _passwordController,
                     hintText: "Password",
@@ -114,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? Icons.visibility_off_outlined
                             : Icons.visibility_outlined,
                         color: AppColors.textSecondary,
-                        size: 20.sp,
+                        size: 20,
                       ),
                       onPressed: () {
                         setState(() {
@@ -127,17 +126,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () => context.push(ForgotPasswordScreen.route),
-                      child: Text(
+                      child: const Text(
                         "Forgot Password?",
                         style: TextStyle(
-                          fontSize: 14.sp,
+                          fontSize: 14,
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 24.h),
+                  const SizedBox(height: 24),
                   CustomButton(
                     text: "Sign In",
                     onPressed: () {
@@ -145,52 +144,52 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
 
-                  SizedBox(height: 32.h),
+                  const SizedBox(height: 32),
                   // Divider Section
                   Row(
                     children: [
                       Expanded(
                         child: Divider(
-                          color: AppColors.textSecondary.withValues(alpha: 0.2),
+                          color: AppColors.textSecondary.withOpacity(0.2),
                           thickness: 1,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
                         child: AppText(
                           text: "Or continue with",
-                          fontSize: 12.sp,
+                          fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
                       ),
                       Expanded(
                         child: Divider(
-                          color: AppColors.textSecondary.withValues(alpha: 0.2),
+                          color: AppColors.textSecondary.withOpacity(0.2),
                           thickness: 1,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 32.h),
+                  const SizedBox(height: 32),
 
                   // Social Login Section
                   SocialButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.g_mobiledata_rounded,
                       color: AppColors.googleColor,
-                      size: 32.sp,
+                      size: 32,
                     ),
                     text: "Continue with Google",
                     onPressed: () {
                       // Handle Google Login
                     },
                   ),
-                  SizedBox(height: 16.h),
+                  const SizedBox(height: 16),
                   SocialButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.apple_rounded,
                       color: AppColors.appleColor,
-                      size: 24.sp,
+                      size: 24,
                     ),
                     text: "Continue with Apple",
                     onPressed: () {
@@ -198,30 +197,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
 
-                  SizedBox(height: 40.h),
+                  const SizedBox(height: 40),
                   // Bottom Section
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AppText(
+                      const AppText(
                         text: "Don't have an account? ",
                         color: AppColors.textSecondary,
-                        fontSize: 14.sp,
+                        fontSize: 14,
                       ),
                       GestureDetector(
                         onTap: () => context.push(SignupScreen.route),
-                        child: Text(
+                        child: const Text(
                           "Sign Up",
                           style: TextStyle(
                             color: AppColors.primaryColor,
-                            fontSize: 14.sp,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 24.h),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),

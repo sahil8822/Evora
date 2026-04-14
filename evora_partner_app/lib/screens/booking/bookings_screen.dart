@@ -91,13 +91,13 @@ class _BookingsScreenState extends State<BookingsScreen>
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                       child: Container(
-                        color: AppColors.backgroundColor.withOpacity(0.8),
+                        color: AppColors.backgroundColor.withValues(alpha: 0.85),
                         child: TabBar(
                           controller: _tabController,
                           isScrollable: true,
-                          labelColor: AppColors.accentColor,
+                          labelColor: AppColors.primaryColor,
                           unselectedLabelColor: AppColors.textSecondary,
-                          indicatorColor: AppColors.accentColor,
+                          indicatorColor: AppColors.primaryColor,
                           indicatorWeight: 3,
                           indicatorSize: TabBarIndicatorSize.label,
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -172,121 +172,122 @@ class _BookingsScreenState extends State<BookingsScreen>
         border: Border.all(color: const Color(0xFFF2F4F7)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 52.w,
-                height: 52.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.r),
-                  image: DecorationImage(
-                    image: CachedNetworkImageProvider(
-                      'https://i.pravatar.cc/150?u=customer_$index',
+      child: _PressableScale(
+        borderRadius: BorderRadius.circular(24.r),
+        onTap: () {
+          context.push(
+            BookingDetailsScreen.route,
+            extra: {
+              'customerName': 'Customer Name $index',
+              'service': 'Wedding Magic',
+              'price': '₹45,000',
+              'date': '24 Oct, 2024',
+              'location': 'Jaipur, RJ',
+              'guests': '450',
+              'status': type,
+            },
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 52.w,
+                  height: 52.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14.r),
+                    image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                        'https://i.pravatar.cc/150?u=customer_$index',
+                      ),
+                      fit: BoxFit.cover,
                     ),
-                    fit: BoxFit.cover,
                   ),
                 ),
-              ),
-              SizedBox(width: 14.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(width: 14.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Customer Name $index",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15.sp,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      Text(
+                        "Wedding Magic Package",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                          fontSize: 12.sp,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                  decoration: BoxDecoration(
+                    color: statusColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Text(
+                    type,
+                    style: GoogleFonts.poppins(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w700,
+                      color: statusColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.h),
+            Row(
+              children: [
+                _buildIconInfo(Icons.calendar_month_rounded, "24 Oct 2024"),
+                SizedBox(width: 20.w),
+                _buildIconInfo(Icons.people_alt_rounded, "450 Guests"),
+                SizedBox(width: 20.w),
+                Expanded(
+                  child: _buildIconInfo(Icons.location_on_rounded, "Jaipur, RJ"),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "₹45,000",
+                  style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 18.sp,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+                Row(
                   children: [
-                    Text(
-                      "Customer Name $index",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15.sp,
-                        color: AppColors.textPrimary,
-                      ),
+                    _buildCircleAction(
+                      Icons.call_rounded,
+                      AppColors.successColor,
                     ),
-                    Text(
-                      "Wedding Magic Package",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(
-                        fontSize: 12.sp,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Text(
-                  type,
-                  style: GoogleFonts.poppins(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w700,
-                    color: statusColor,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          Row(
-            children: [
-              _buildIconInfo(Icons.calendar_month_rounded, "24 Oct 2024"),
-              SizedBox(width: 20.w),
-              _buildIconInfo(Icons.people_alt_rounded, "450 Guests"),
-              SizedBox(width: 20.w),
-              Expanded(
-                child: _buildIconInfo(Icons.location_on_rounded, "Jaipur, RJ"),
-              ),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "₹45,000",
-                style: GoogleFonts.montserrat(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 18.sp,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-              Row(
-                children: [
-                  _buildCircleAction(
-                    Icons.call_rounded,
-                    AppColors.successColor,
-                  ),
-                  SizedBox(width: 10.w),
-                  GestureDetector(
-                    onTap: () {
-                      context.push(
-                        BookingDetailsScreen.route,
-                        extra: {
-                          'customerName': 'Customer Name $index',
-                          'service': 'Wedding Magic',
-                          'price': '₹45,000',
-                          'date': '24 Oct, 2024',
-                          'location': 'Jaipur, RJ',
-                          'guests': '450',
-                          'status': type,
-                        },
-                      );
-                    },
-                    child: Container(
+                    SizedBox(width: 10.w),
+                    Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
                         vertical: 8.h,
@@ -304,12 +305,12 @@ class _BookingsScreenState extends State<BookingsScreen>
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -339,7 +340,7 @@ class _BookingsScreenState extends State<BookingsScreen>
     return Container(
       padding: EdgeInsets.all(10.w),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         shape: BoxShape.circle,
       ),
       child: Icon(icon, color: color, size: 18.sp),
@@ -369,5 +370,41 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
     return false;
+  }
+}
+
+class _PressableScale extends StatefulWidget {
+  final Widget child;
+  final VoidCallback? onTap;
+  final BorderRadius borderRadius;
+  const _PressableScale({
+    required this.child,
+    required this.borderRadius,
+    this.onTap,
+  });
+
+  @override
+  State<_PressableScale> createState() => _PressableScaleState();
+}
+
+class _PressableScaleState extends State<_PressableScale> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedScale(
+      duration: const Duration(milliseconds: 120),
+      curve: Curves.easeOut,
+      scale: _pressed ? 0.98 : 1,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: widget.borderRadius,
+          onTap: widget.onTap,
+          onHighlightChanged: (v) => setState(() => _pressed = v),
+          child: widget.child,
+        ),
+      ),
+    );
   }
 }

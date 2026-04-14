@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evora/core/theme/app_colors.dart';
+import 'package:evora/core/models/feed_post.dart';
+import 'package:evora/providers/feed_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 // ─── Explore Feed Screen ───
 class ExploreFeedScreen extends StatefulWidget {
@@ -73,6 +76,12 @@ class _ExploreFeedScreenState extends State<ExploreFeedScreen>
 
   @override
   Widget build(BuildContext context) {
+    final feed = context.watch<FeedProvider>();
+    final selected = _categories[_selectedCategory];
+    final posts = selected == 'All'
+        ? feed.posts
+        : feed.posts.where((p) => p.category == selected).toList();
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
@@ -217,15 +226,18 @@ class _ExploreFeedScreenState extends State<ExploreFeedScreen>
 
                 final postIndex = index - (index ~/ 7);
                 final isSponsored = postIndex == 0 || postIndex == 5;
+                if (postIndex >= posts.length) {
+                  return const SizedBox.shrink();
+                }
 
                 return FadeTransition(
                   opacity: _staggeredFade(index + 2),
                   child: SlideTransition(
                     position: _staggeredSlide(index + 2),
-                    child: _buildFeedCard(postIndex, isSponsored: isSponsored),
+                    child: _buildFeedCard(posts[postIndex], isSponsored: isSponsored),
                   ),
                 );
-              }, childCount: 15),
+              }, childCount: posts.length + (posts.isEmpty ? 0 : (posts.length ~/ 7))),
             ),
 
             SliverToBoxAdapter(child: SizedBox(height: 120.h)),
@@ -236,82 +248,7 @@ class _ExploreFeedScreenState extends State<ExploreFeedScreen>
   }
 
   // ─────────── FEED CARD ───────────
-  Widget _buildFeedCard(int index, {bool isSponsored = false}) {
-    final vendors = [
-      _VendorPost(
-        'Royal Tent House',
-        'Ahmedabad',
-        'Stunning Rajwadi tent setup for a grand wedding ceremony 🎪✨',
-        '₹40,000',
-        'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800',
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
-        '4.8',
-        '234',
-      ),
-      _VendorPost(
-        'Golden Catering',
-        'Mumbai',
-        'Luxury buffet spread with 50+ dishes for your special day 🍽️',
-        '₹1,50,000',
-        'https://images.unsplash.com/photo-1555244162-803834f70033?w=800',
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200',
-        '4.9',
-        '567',
-      ),
-      _VendorPost(
-        'DJ Beats India',
-        'Delhi',
-        'Professional DJ setup with LED lights and premium sound 🎵',
-        '₹25,000',
-        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800',
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200',
-        '4.7',
-        '189',
-      ),
-      _VendorPost(
-        'Dream Photo Studio',
-        'Jaipur',
-        'Cinematic wedding photography that tells your love story 📸',
-        '₹60,000',
-        'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800',
-        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200',
-        '5.0',
-        '412',
-      ),
-      _VendorPost(
-        'Elite Wedding Garden',
-        'Udaipur',
-        'Breathtaking palace lawns for a fairy-tale wedding 🌿',
-        '₹2,00,000',
-        'https://images.unsplash.com/photo-1464366400600-7168b924a78a?w=800',
-        'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200',
-        '4.9',
-        '678',
-      ),
-      _VendorPost(
-        'Perfect Mehendi Studio',
-        'Bangalore',
-        'Intricate bridal mehendi designs that leave everyone in awe ✋',
-        '₹8,000',
-        'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800',
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200',
-        '4.6',
-        '320',
-      ),
-      _VendorPost(
-        'Elegant Event Decor',
-        'Pune',
-        'Transform your venue into a magical wonderland 🌟',
-        '₹75,000',
-        'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=800',
-        'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200',
-        '4.8',
-        '445',
-      ),
-    ];
-
-    final vendor = vendors[index % vendors.length];
-
+  Widget _buildFeedCard(FeedPost vendor, {bool isSponsored = false}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Container(
@@ -347,7 +284,7 @@ class _ExploreFeedScreenState extends State<ExploreFeedScreen>
                     ),
                     child: ClipOval(
                       child: CachedNetworkImage(
-                        imageUrl: vendor.avatarUrl,
+                        imageUrl: vendor.vendorAvatarUrl,
                         fit: BoxFit.cover,
                         placeholder: (_, __) =>
                             Container(color: AppColors.secondaryColor),
@@ -363,7 +300,7 @@ class _ExploreFeedScreenState extends State<ExploreFeedScreen>
                           children: [
                             Flexible(
                               child: Text(
-                                vendor.name,
+                                vendor.vendorName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.montserrat(
@@ -422,7 +359,7 @@ class _ExploreFeedScreenState extends State<ExploreFeedScreen>
                             ),
                             SizedBox(width: 2.w),
                             Text(
-                              vendor.rating,
+                              vendor.rating.toStringAsFixed(1),
                               style: GoogleFonts.poppins(
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.w600,
@@ -494,7 +431,7 @@ class _ExploreFeedScreenState extends State<ExploreFeedScreen>
                         ),
                       ),
                       Text(
-                        vendor.price,
+                        vendor.priceLabel,
                         style: GoogleFonts.montserrat(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w700,
@@ -510,7 +447,7 @@ class _ExploreFeedScreenState extends State<ExploreFeedScreen>
                     children: [
                       _buildActionButton(
                         Icons.favorite_border_rounded,
-                        vendor.likes,
+                        vendor.likes.toString(),
                         Colors.redAccent,
                       ),
                       SizedBox(width: 16.w),
@@ -681,28 +618,6 @@ class _ExploreFeedScreenState extends State<ExploreFeedScreen>
       ),
     );
   }
-}
-
-// ─── Data Classes ───
-class _VendorPost {
-  final String name,
-      location,
-      caption,
-      price,
-      imageUrl,
-      avatarUrl,
-      rating,
-      likes;
-  _VendorPost(
-    this.name,
-    this.location,
-    this.caption,
-    this.price,
-    this.imageUrl,
-    this.avatarUrl,
-    this.rating,
-    this.likes,
-  );
 }
 
 class _AdData {

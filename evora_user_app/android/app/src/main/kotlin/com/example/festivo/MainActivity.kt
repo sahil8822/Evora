@@ -1,4 +1,4 @@
-package com.example.festivo
+package com.example.evora
 
 import io.flutter.embedding.android.FlutterActivity
 

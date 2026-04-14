@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evora_partner_app/core/theme/app_colors.dart';
+import 'package:evora_partner_app/screens/feed/upload_post_screen.dart';
 import 'package:evora_partner_app/screens/home/widgets/home_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreens extends StatefulWidget {
@@ -166,7 +168,7 @@ class _HomeScreensState extends State<HomeScreens>
                             vertical: 6.h,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.accentColor.withOpacity(0.1),
+                            color: AppColors.accentColor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Text(
@@ -222,14 +224,14 @@ class _HomeScreensState extends State<HomeScreens>
           end: Alignment.bottomRight,
           colors: [
             AppColors.primaryColor,
-            AppColors.primaryColor.withOpacity(0.8),
-            AppColors.accentColor.withOpacity(0.7),
+            AppColors.primaryColor.withValues(alpha: 0.8),
+            AppColors.accentColor.withValues(alpha: 0.7),
           ],
         ),
         borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryColor.withOpacity(0.3),
+            color: AppColors.primaryColor.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -245,13 +247,13 @@ class _HomeScreensState extends State<HomeScreens>
                 "Today's Earnings",
                 style: GoogleFonts.poppins(
                   fontSize: 13.sp,
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withValues(alpha: 0.8),
                 ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Row(
@@ -285,16 +287,22 @@ class _HomeScreensState extends State<HomeScreens>
             ),
           ),
           SizedBox(height: 20.h),
-          Container(height: 1, color: Colors.white.withOpacity(0.1)),
+          Container(height: 1, color: Colors.white.withValues(alpha: 0.1)),
           SizedBox(height: 20.h),
-          Row(
-            children: [
-              _buildBannerStat("Completed", "08"),
-              SizedBox(width: 32.w),
-              _buildBannerStat("Upcoming", "03"),
-              SizedBox(width: 32.w),
-              _buildBannerStat("Cancelled", "01"),
-            ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              // Prevent pixel overflow on small widths by distributing space
+              // and allowing text to ellipsize.
+              return Row(
+                children: [
+                  Expanded(child: _buildBannerStat("Completed", "08")),
+                  SizedBox(width: 12.w),
+                  Expanded(child: _buildBannerStat("Upcoming", "03")),
+                  SizedBox(width: 12.w),
+                  Expanded(child: _buildBannerStat("Cancelled", "01")),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -315,9 +323,11 @@ class _HomeScreensState extends State<HomeScreens>
         ),
         Text(
           label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: GoogleFonts.poppins(
             fontSize: 11.sp,
-            color: Colors.white.withOpacity(0.65),
+            color: Colors.white.withValues(alpha: 0.65),
           ),
         ),
       ],
@@ -355,63 +365,60 @@ class _HomeScreensState extends State<HomeScreens>
       itemCount: stats.length,
       itemBuilder: (context, index) {
         final stat = stats[index];
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: AnimatedScale(
-            duration: const Duration(milliseconds: 200),
-            scale: 1.0,
-            child: Container(
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20.r),
-                border: Border.all(color: const Color(0xFFF2F4F7)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.02),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
+        return _PressableScale(
+          borderRadius: BorderRadius.circular(20.r),
+          onTap: () {},
+          child: Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.r),
+              border: Border.all(color: const Color(0xFFF2F4F7)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.02),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(8.w),
+                  decoration: BoxDecoration(
+                    color: stat.color.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: stat.color.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12.r),
+                  child: Icon(stat.icon, color: stat.color, size: 20.sp),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      stat.value,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
-                    child: Icon(stat.icon, color: stat.color, size: 20.sp),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        stat.value,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.textPrimary,
-                        ),
+                    Text(
+                      stat.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 11.sp,
+                        color: AppColors.textSecondary,
                       ),
-                      Text(
-                        stat.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                          fontSize: 11.sp,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         );
@@ -422,6 +429,12 @@ class _HomeScreensState extends State<HomeScreens>
   // ───────────── QUICK ACTIONS ─────────────
   Widget _buildQuickActions() {
     final actions = [
+      _ActionItem(
+        "Create\nPost",
+        Icons.add_photo_alternate_rounded,
+        AppColors.primaryColor,
+        route: UploadPostScreen.route,
+      ),
       _ActionItem(
         "Add\nService",
         Icons.add_business_rounded,
@@ -467,41 +480,49 @@ class _HomeScreensState extends State<HomeScreens>
             itemCount: actions.length,
             itemBuilder: (context, index) {
               final action = actions[index];
-              return Container(
-                width: 100.w,
-                padding: EdgeInsets.all(14.w),
-                decoration: BoxDecoration(
-                  color: action.color.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(20.r),
-                  border: Border.all(color: action.color.withOpacity(0.15)),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(10.w),
-                      decoration: BoxDecoration(
-                        color: action.color.withOpacity(0.15),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        action.icon,
-                        color: action.color,
-                        size: 22.sp,
-                      ),
+              return _PressableScale(
+                borderRadius: BorderRadius.circular(20.r),
+                onTap: action.route == null
+                    ? null
+                    : () => context.push(action.route!),
+                child: Container(
+                  width: 100.w,
+                  padding: EdgeInsets.all(14.w),
+                  decoration: BoxDecoration(
+                    color: action.color.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(
+                      color: action.color.withValues(alpha: 0.15),
                     ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      action.title,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                        height: 1.3,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10.w),
+                        decoration: BoxDecoration(
+                          color: action.color.withValues(alpha: 0.15),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          action.icon,
+                          color: action.color,
+                          size: 22.sp,
+                        ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 8.h),
+                      Text(
+                        action.title,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                          height: 1.3,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
@@ -596,7 +617,7 @@ class _HomeScreensState extends State<HomeScreens>
                       borderRadius: BorderRadius.circular(4.r),
                       child: LinearProgressIndicator(
                         value: s.progress,
-                        backgroundColor: s.color.withOpacity(0.1),
+                        backgroundColor: s.color.withValues(alpha: 0.1),
                         valueColor: AlwaysStoppedAnimation(s.color),
                         minHeight: 6.h,
                       ),
@@ -652,7 +673,7 @@ class _HomeScreensState extends State<HomeScreens>
         border: Border.all(color: const Color(0xFFF2F4F7)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -705,7 +726,7 @@ class _HomeScreensState extends State<HomeScreens>
                           vertical: 3.h,
                         ),
                         decoration: BoxDecoration(
-                          color: b.statusColor.withOpacity(0.1),
+                          color: b.statusColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(6.r),
                         ),
                         child: Text(
@@ -802,7 +823,7 @@ class _HomeScreensState extends State<HomeScreens>
     return Container(
       padding: EdgeInsets.all(8.w),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         shape: BoxShape.circle,
       ),
       child: Icon(icon, size: 16.sp, color: color),
@@ -823,7 +844,8 @@ class _ActionItem {
   final String title;
   final IconData icon;
   final Color color;
-  _ActionItem(this.title, this.icon, this.color);
+  final String? route;
+  _ActionItem(this.title, this.icon, this.color, {this.route});
 }
 
 class _ServicePerf {
@@ -845,4 +867,40 @@ class _BookingData {
     this.status,
     this.statusColor,
   );
+}
+
+class _PressableScale extends StatefulWidget {
+  final Widget child;
+  final VoidCallback? onTap;
+  final BorderRadius borderRadius;
+  const _PressableScale({
+    required this.child,
+    required this.borderRadius,
+    this.onTap,
+  });
+
+  @override
+  State<_PressableScale> createState() => _PressableScaleState();
+}
+
+class _PressableScaleState extends State<_PressableScale> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedScale(
+      duration: const Duration(milliseconds: 120),
+      curve: Curves.easeOut,
+      scale: _pressed ? 0.98 : 1,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: widget.borderRadius,
+          onTap: widget.onTap,
+          onHighlightChanged: (v) => setState(() => _pressed = v),
+          child: widget.child,
+        ),
+      ),
+    );
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:evora/screens/auth/onboarding/onboarding_screen.dart';
-import 'package:evora/screens/home/bottom_nave/bottom_nav.dart';
+import 'package:evora/screens/home/bottom_nav/bottom_nav.dart';
 import 'package:evora/screens/booking/bookings_screen.dart';
 import 'package:evora/screens/home/screens/home_screens.dart';
 import 'package:evora/screens/profile/profile_screen.dart';
@@ -12,6 +12,7 @@ import 'package:evora/screens/services/payment_screen.dart';
 import 'package:evora/screens/services/booking_confirmation_screen.dart';
 import 'package:evora/screens/messages/chat_screen.dart';
 import 'package:evora/screens/explore/explore_feed_screen.dart';
+import 'package:evora/screens/home/screens/search_screen.dart';
 
 import 'package:evora/screens/booking/booking_details_screen.dart';
 import 'package:evora/screens/services/all_reviews_screen.dart';
@@ -105,8 +106,11 @@ final GoRouter appRouter = GoRouter(
       name: ChatScreen.route,
       parentNavigatorKey: rootNavigatorKey,
       builder: (context, state) {
-        final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
-        return ChatScreen(name: extra['name'], imageUrl: extra['imageUrl']);
+        final extra = state.extra;
+        final map = extra is Map<String, dynamic> ? extra : const <String, dynamic>{};
+        final name = (map['name'] as String?) ?? 'Chat';
+        final imageUrl = (map['imageUrl'] as String?) ?? '';
+        return ChatScreen(name: name, imageUrl: imageUrl);
       },
     ),
     GoRoute(
@@ -141,6 +145,12 @@ final GoRouter appRouter = GoRouter(
       name: BookingConfirmationScreen.route,
       parentNavigatorKey: rootNavigatorKey,
       builder: (context, state) => const BookingConfirmationScreen(),
+    ),
+    GoRoute(
+      path: SearchScreen.route,
+      name: SearchScreen.route,
+      parentNavigatorKey: rootNavigatorKey,
+      builder: (context, state) => const SearchScreen(),
     ),
     GoRoute(
       path: PersonalInfoScreen.route,
@@ -195,7 +205,9 @@ final GoRouter appRouter = GoRouter(
       name: BookingDetailsScreen.route,
       parentNavigatorKey: rootNavigatorKey,
       builder: (context, state) {
-        final booking = state.extra as Map<String, dynamic>;
+        final extra = state.extra;
+        final booking =
+            extra is Map<String, dynamic> ? extra : <String, dynamic>{};
         return BookingDetailsScreen(booking: booking);
       },
     ),

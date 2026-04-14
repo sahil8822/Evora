@@ -4,7 +4,6 @@ import 'package:evora/core/services/permission_service.dart';
 import 'package:evora/core/theme/app_colors.dart';
 import 'package:evora/screens/auth/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -109,10 +108,10 @@ class _SplashScreenState extends State<SplashScreen>
                           child: Text(
                             "Evora",
                             style: GoogleFonts.inriaSerif(
-                              fontSize: 50.sp,
+                              fontSize: 50,
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.w400,
-                              letterSpacing: 4.w,
+                              letterSpacing: 4,
                             ),
                           ),
                         ),
@@ -120,7 +119,7 @@ class _SplashScreenState extends State<SplashScreen>
                     );
                   },
                 ),
-                SizedBox(height: 10.h),
+                const SizedBox(height: 10),
                 // Animated Tagline
                 AnimatedBuilder(
                   animation: _controller,
@@ -134,8 +133,8 @@ class _SplashScreenState extends State<SplashScreen>
                         ),
                         child: AppText(
                           text: 'CELEBRATE EVERY MOMENT',
-                          fontSize: 10.sp,
-                          color: AppColors.textSecondary.withValues(alpha: 0.8),
+                          fontSize: 10,
+                          color: AppColors.textSecondary.withOpacity(0.8),
                           fontWeight: FontWeight.w500,
                           letterSpacing: 4.0,
                         ),

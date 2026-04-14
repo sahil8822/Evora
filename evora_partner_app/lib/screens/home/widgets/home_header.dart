@@ -60,60 +60,67 @@ class _HomeHeaderState extends State<HomeHeader> {
           ),
         ),
         // Online/Offline toggle
-        GestureDetector(
-          onTap: () => setState(() => _isOnline = !_isOnline),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-            decoration: BoxDecoration(
-              color: _isOnline
-                  ? AppColors.successColor.withOpacity(0.1)
-                  : AppColors.errorColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20.r),
-              border: Border.all(
-                color: _isOnline
-                    ? AppColors.successColor.withOpacity(0.3)
-                    : AppColors.errorColor.withOpacity(0.3),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  width: 8.w,
-                  height: 8.w,
-                  decoration: BoxDecoration(
+        Flexible(
+          fit: FlexFit.loose,
+          child: Align(
+            alignment: Alignment.topRight,
+            child: GestureDetector(
+              onTap: () => setState(() => _isOnline = !_isOnline),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: _isOnline
+                      ? AppColors.successColor.withValues(alpha: 0.1)
+                      : AppColors.errorColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(
                     color: _isOnline
-                        ? AppColors.successColor
-                        : AppColors.errorColor,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color:
-                            (_isOnline
+                        ? AppColors.successColor.withValues(alpha: 0.3)
+                        : AppColors.errorColor.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      width: 8.w,
+                      height: 8.w,
+                      decoration: BoxDecoration(
+                        color: _isOnline
+                            ? AppColors.successColor
+                            : AppColors.errorColor,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: (_isOnline
                                     ? AppColors.successColor
                                     : AppColors.errorColor)
-                                .withOpacity(0.5),
-                        blurRadius: 6,
-                        spreadRadius: 1,
+                                .withValues(alpha: 0.5),
+                            blurRadius: 6,
+                            spreadRadius: 1,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: 6.w),
+                    Text(
+                      _isOnline ? "Online" : "Offline",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w600,
+                        color: _isOnline
+                            ? AppColors.successColor
+                            : AppColors.errorColor,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 6.w),
-                Text(
-                  _isOnline ? "Online" : "Offline",
-                  style: GoogleFonts.poppins(
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w600,
-                    color: _isOnline
-                        ? AppColors.successColor
-                        : AppColors.errorColor,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

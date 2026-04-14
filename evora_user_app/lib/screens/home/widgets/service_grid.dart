@@ -1,7 +1,6 @@
 import 'package:evora/core/theme/app_colors.dart';
 import 'package:evora/screens/services/vendor_listing_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,25 +25,25 @@ class ServiceGrid extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             'Explore Services',
             style: GoogleFonts.montserrat(
-              fontSize: 18.sp,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
             ),
           ),
         ),
-        SizedBox(height: 16.h),
+        const SizedBox(height: 16),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            mainAxisSpacing: 12.h,
-            crossAxisSpacing: 12.w,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
             childAspectRatio: 0.85,
           ),
           itemCount: _services.length,
@@ -57,7 +56,7 @@ class ServiceGrid extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.r),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.03),
@@ -70,25 +69,25 @@ class ServiceGrid extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(12.w),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(12),
+                      decoration: const BoxDecoration(
                         color: AppColors.backgroundColor,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         service['icon'] as IconData,
                         color: AppColors.primaryColor,
-                        size: 26.sp,
+                        size: 26,
                       ),
                     ),
-                    SizedBox(height: 8.h),
+                    const SizedBox(height: 8),
                     Text(
                       service['name'] as String,
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.poppins(
-                        fontSize: 11.sp,
+                        fontSize: 11,
                         fontWeight: FontWeight.w500,
                         color: AppColors.textPrimary,
                       ),

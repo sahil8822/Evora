@@ -1,7 +1,6 @@
 import 'package:evora/components/app_text.dart';
 import 'package:evora/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -31,20 +30,20 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width ?? double.infinity,
-      height: height ?? 48.h,
+      height: height ?? 48,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor ?? AppColors.primaryColor,
           foregroundColor: textColor ?? Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+            borderRadius: BorderRadius.circular(borderRadius ?? 16),
           ),
           elevation: elevation,
         ),
         child: AppText(
           text: text,
-          fontSize: fontSize ?? 18.sp,
+          fontSize: fontSize ?? 18,
           color: textColor ?? Colors.white,
           fontWeight: FontWeight.bold,
         ),
