@@ -1,10 +1,10 @@
 import 'package:evora/core/theme/app_colors.dart';
-import 'package:evora/providers/vendor_provider.dart';
+import 'package:evora/cubit/vendor_cubit.dart';
 import 'package:evora/screens/home/widgets/vendor_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class VendorListingScreen extends StatefulWidget {
   final String categoryName;
@@ -28,13 +28,11 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
 
     // Always reset state when entering this screen
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<VendorProvider>(context, listen: false);
-      provider
-          .clearFilters(); // Reset everything (Sub-filter defaults to 'All')
-
+      final cubit = context.read<VendorCubit>();
+      cubit.clearFilters();
       // If we came from a specific category on Home, set it as the main category restraint
       if (widget.categoryName != 'Services' && widget.categoryName != 'All') {
-        provider.setMainCategory(widget.categoryName);
+        cubit.setMainCategory(widget.categoryName);
       }
     });
   }
@@ -110,9 +108,9 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: Consumer<VendorProvider>(
-        builder: (context, vendorProvider, child) {
-          final vendors = vendorProvider.filteredVendors;
+      body: BlocBuilder<VendorCubit, VendorState>(
+        builder: (context, vendorState) {
+          final vendors = vendorState.filteredVendors;
           final dynamicCats = _getDynamicCategories();
 
           return CustomScrollView(
@@ -139,7 +137,8 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
                       Icons.tune_rounded,
                       color: AppColors.accentColor,
                     ),
-                    onPressed: () => _showFilterBottomSheet(vendorProvider),
+                    onPressed: () =>
+                        _showFilterBottomSheet(context.read<VendorCubit>()),
                   ),
                 ],
                 title: AnimatedOpacity(
@@ -181,7 +180,7 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
                         child: AnimatedOpacity(
                           duration: const Duration(milliseconds: 200),
                           opacity: _isCollapsed ? 0.0 : 1.0,
-                          child: _buildSearchField(vendorProvider),
+                          child: _buildSearchField(context.read<VendorCubit>()),
                         ),
                       ),
                     ],
@@ -208,7 +207,7 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
                       return _buildCategoryChip(
                         cat['name'] as String,
                         cat['icon'] as IconData,
-                        vendorProvider,
+                        context.read<VendorCubit>(),
                       );
                     },
                   ),
@@ -308,7 +307,7 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
     );
   }
 
-  Widget _buildSearchField(VendorProvider provider) {
+  Widget _buildSearchField(VendorCubit cubit) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.backgroundColor,
@@ -323,7 +322,7 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
       ),
       child: TextField(
         controller: _searchController,
-        onChanged: provider.updateSearchQuery,
+        onChanged: cubit.updateSearchQuery,
         decoration: InputDecoration(
           hintText: 'Search vendors...',
           hintStyle: GoogleFonts.poppins(
@@ -346,7 +345,7 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
                   ),
                   onPressed: () {
                     _searchController.clear();
-                    provider.updateSearchQuery('');
+                    cubit.updateSearchQuery('');
                   },
                 )
               : null,
@@ -355,14 +354,10 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
     );
   }
 
-  Widget _buildCategoryChip(
-    String category,
-    IconData icon,
-    VendorProvider provider,
-  ) {
-    final isSelected = provider.selectedCategoryFilter == category;
+  Widget _buildCategoryChip(String category, IconData icon, VendorCubit cubit) {
+    final isSelected = cubit.state.selectedCategoryFilter == category;
     return GestureDetector(
-      onTap: () => provider.updateCategoryFilter(category),
+      onTap: () => cubit.updateCategoryFilter(category),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         margin: EdgeInsets.only(right: 12.w),
@@ -406,7 +401,7 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
     );
   }
 
-  void _showFilterBottomSheet(VendorProvider provider) {
+  void _showFilterBottomSheet(VendorCubit cubit) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -446,7 +441,7 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      provider.clearFilters();
+                      cubit.clearFilters();
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -481,7 +476,7 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
                     ),
                     border: InputBorder.none,
                   ),
-                  onChanged: (val) => provider.updateFilters(location: val),
+                  onChanged: (val) => cubit.updateFilters(location: val),
                 ),
               ),
 
@@ -505,18 +500,18 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
               _buildSectionTitle('Price Range'),
               SizedBox(height: 4.h),
               RangeSlider(
-                values: provider.priceRange,
+                values: cubit.state.priceRange,
                 min: 1000,
                 max: 500000,
                 divisions: 100,
                 activeColor: AppColors.primaryColor,
                 inactiveColor: AppColors.primaryColor.withOpacity(0.1),
                 labels: RangeLabels(
-                  '₹${provider.priceRange.start.round()}',
-                  '₹${provider.priceRange.end.round()}',
+                  '₹${cubit.state.priceRange.start.round()}',
+                  '₹${cubit.state.priceRange.end.round()}',
                 ),
                 onChanged: (values) {
-                  provider.updateFilters(priceRange: values);
+                  cubit.updateFilters(priceRange: values);
                   setModalState(() {});
                 },
               ),
@@ -524,14 +519,14 @@ class _VendorListingScreenState extends State<VendorListingScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '₹${provider.priceRange.start.round()}',
+                    '₹${cubit.state.priceRange.start.round()}',
                     style: GoogleFonts.poppins(
                       color: AppColors.textSecondary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    '₹${provider.priceRange.end.round()}',
+                    '₹${cubit.state.priceRange.end.round()}',
                     style: GoogleFonts.poppins(
                       color: AppColors.textSecondary,
                       fontWeight: FontWeight.bold,

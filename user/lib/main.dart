@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:evora/core/routers/app_router.dart';
 import 'package:evora/core/theme/app_colors.dart';
-import 'package:provider/provider.dart';
-import 'package:evora/providers/vendor_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:evora/cubit/vendor_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +17,8 @@ void main() async {
   ]);
 
   runApp(
-    MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => VendorProvider())],
+    BlocProvider<VendorCubit>(
+      create: (_) => VendorCubit(),
       child: const MyApp(),
     ),
   );
